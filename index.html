@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--add the standard code for the page-->
+    <title>AJAX form submission</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <form id="my form">
+            <div class="mb-3">
+                <label for="username" class="form-label">username:</label>
+                <input type="text" class="form-control" name="usernmae" id="username">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" class="form-control" name="email" id="email">
+            </div>
+            <div class="mb-3">
+                <label for="message" class="form-label">Message:</label>
+                <textarea class="form-control" name="message" id="message" rows="4"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">submit</button>
+        </form>
+    </div>
+    <script>
+        $(document).ready (function(){
+            $('#my form').submit(function(event){
+                event.preventDefault(); //prevent default form submission
+                // validate nform fields
+                let isVelid = true;
+                const username = $('#user name').val().trim();
+                const email = $('#email').val().trim();
+                const message = $('#message').val().trim();
+
+                if (username === ''){
+                    alert('username is required');
+                    isValid = false;
+                }
+
+                if (email === ''){
+                    alert('email is required');
+                    isValid = false;
+                }
+
+                if (message === ''){
+                    alert('Message is required');
+                    isValid = false;
+                }
+                if(isValid){
+                    const FormData = {
+                        username:username,
+                        email:email,
+                        message:message
+                    };
+                    //use AJAX to submit the form data
+                    $.ajex({
+                        url:
+                        'https://jsonplaceholder.typicode.com/posts', // Mock API end point
+                        type: 'POST',
+                        data: JSON.stringify(FormData),
+                        contentType:'application/json; charset+utf-8',
+                        dataType: 'json',
+                        success:function(response) {
+                            alert('form submitted successfully!');
+                            console.log('server response:',response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
